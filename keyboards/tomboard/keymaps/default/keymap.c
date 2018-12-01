@@ -15,64 +15,74 @@
  */
 #include QMK_KEYBOARD_H
 
-enum tomboard_layers { qwerty, numeric, function };
-
-#define MONUM MO(numeric)
-#define MOFUN MO(function)
+enum tomboard_layers { qwerty, numbers, symbols };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Qwerty
  * ,---------------------------. .---------------------------.
- * |Tab| Q | W | E | R | T |[{ | |-_ | Y | U | I | O | P |Bks|
+ * |Tab| Q | W | E | R | T |Pup| |-_ | Y | U | I | O | P |Bks|
  * |---+---+---+---+---+---+---+ +---+---+---+---+---+---+---|
- * |Esc| A | S | D | F | G |]} | |=+ | H | J | K | L |;: |'" |
+ * |Esc| A | S | D | F | G |Pdn| |=+ | H | J | K | L |;: |'" |
  * |---+---+---+---+---+---+---+ +---+---+---+---+---+---+---|
  * |LSh| Z | X | C | V | B |`~ | |\| | N | M |,< |.> |?/ |RSh|
  * |---+---+---+---+---+---+---+ +---+---+---+---+---+---+---|
- * |Ctl|Alt|Sup|Num|Fun|Spc|Ent| |Ent|Spc|Fun|Num|   |RAl|Ctl|
+ * |Ctl|Alt|Sup|   |[{ |Spc|Ent| |Ent|Spc| }]|   |   |RAl|Ctl|
  * `---------------------------' `---------------------------'
+ *                      Sym Num   Num Sym
  */
  [qwerty] = {
-     { KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_LBRC, KC_MINS, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_BSPC },
-     { KC_ESC, KC_A, KC_S, KC_D, KC_F, KC_G, KC_RBRC, KC_EQL,  KC_H,  KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT },
-     { KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_GRAVE, KC_BSLS, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RSFT },
-     { KC_LCTL, KC_LALT, KC_LGUI, MONUM, MOFUN, KC_SPC, KC_ENT, KC_ENT, KC_SPC, MOFUN, MONUM, KC_NO, KC_RALT, KC_RCTL }
+     { KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_PGUP,
+         KC_MINS, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_BSPC },
+     { KC_ESC, KC_A, KC_S, KC_D, KC_F, KC_G, KC_PGDN,
+         KC_EQL,  KC_H,  KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT },
+     { KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_GRAVE,
+         KC_BSLS, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RSFT },
+     { KC_LCTL, KC_LALT, KC_LGUI, KC_NO, KC_LBRC, LT(symbols, KC_SPC), LT(numbers, KC_ENT),
+         LT(numbers, KC_ENT), LT(symbols, KC_SPC), KC_RBRC, KC_NO, KC_NO, KC_RALT, KC_RCTL }
  },
 
-/* Num
+/* Numbers
  * ,---------------------------. .---------------------------.
- * |   | 1 | 2 | 3 | 4 | 5 |   | |   | 6 | 7 | 8 | 9 | 0 |Del|
+ * |   | 1 | 2 | 3 | 4 | 5 |Hm | |   | 6 | 7 | 8 | 9 | 0 |Del|
  * |---+---+---+---+---+---+---+ +---+---+---+---+---+---+---|
- * |   | ! | @ | # | $ | % |   | |   | ^ | & | * | ( | ) |   |
+ * |   |   |   |   |   |   |End| |   |<- | v | ^ | ->|   |   |
  * |---+---+---+---+---+---+---+ +---+---+---+---+---+---+---|
- * |   |   |   |   |   |   |   | |   |<- | v | ^ | ->|   |   |
+ * |   |   |   |   |   |   |   | |   |   |   |   |   |   |   |
  * |---+---+---+---+---+---+---+ +---+---+---+---+---+---+---|
  * |   |   |   |   |   |   |   | |   |   |   |   |   |   |   |
  * `---------------------------' `---------------------------'
  */
- [numeric] = {
-     { KC_NO, KC_1, KC_2, KC_3, KC_4, KC_5, KC_NO, KC_NO, KC_6, KC_7, KC_8, KC_9, KC_0, KC_DEL },
-     { KC_NO, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_NO, KC_NO, KC_CIRC, KC_AMPR,    KC_ASTR,    KC_LPRN, KC_RPRN, KC_NO },
-     { KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_LEFT, KC_DOWN,    KC_UP,    KC_RIGHT, KC_RPRN, KC_TRNS },
-     { KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS}
+ [numbers] = {
+     { KC_TRNS, KC_1, KC_2, KC_3, KC_4, KC_5, KC_HOME,
+         KC_TRNS, KC_6, KC_7, KC_8, KC_9, KC_0, KC_DEL },
+     { KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_END,
+         KC_TRNS, KC_LEFT, KC_DOWN,    KC_UP,    KC_RIGHT, KC_TRNS, KC_TRNS },
+     { KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS },
+     { KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS}
  },
 
-/* Fun
+/* Symbols
  * ,---------------------------. .---------------------------.
- * |   |F1 |F2 |F3 |F4 |F5 |F6 | |   |   |   | 1 | 2 | 3 |   |
+ * |   | ! | @ | # | $ | % |   | |   | ^ | & | * | ( | ) |   |
  * |---+---+---+---+---+---+---+ +---+---+---+---+---+---+---|
- * |   |F7 |F8 |F9 |F10|F11|F12| |   |   |   | 4 | 5 | 6 |   |
+ * |   |F1 |F2 |F3 |F4 |F5 |F6 | |   |   |   |   |   |   |   |
  * |---+---+---+---+---+---+---+ +---+---+---+---+---+---+---|
- * |   |   |   |   |   |   |   | |   |   |   | 7 | 8 | 9 |   |
+ * |   |F7 |F8 |F9 |F10|F11|F12| |   |   |   |   |   |   |   |
  * |---+---+---+---+---+---+---+ +---+---+---+---+---+---+---|
- * |   |   |   |   |   |   |   | |   |   |   |   | 0 |   |   |
+ * |   |   |   |RST|   |   |   | |   |   |   |   |   |   |   |
  * `---------------------------' `---------------------------'
  */
- [function] = {
-     { KC_NO,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_NO, KC_NO, KC_NO, KC_1, KC_2, KC_3, KC_NO },
-     { KC_NO,  KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_NO, KC_NO, KC_NO, KC_4, KC_5, KC_6, KC_NO },
-     { KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_7, KC_8, KC_9, KC_TRNS },
-     { KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS}
+ [symbols] = {
+     { KC_TRNS, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_TRNS,
+         KC_TRNS, KC_CIRC, KC_AMPR,    KC_ASTR,    KC_LPRN, KC_RPRN, KC_TRNS },
+     { KC_TRNS,  KC_F1,   KC_F2,   KC_F3,   KC_F4,  KC_F5,  KC_F6,
+         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS },
+     { KC_TRNS,  KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
+         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS },
+     { KC_TRNS, KC_TRNS, KC_TRNS, RESET, KC_TRNS, KC_TRNS, KC_TRNS,
+         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS}
  },
 };
 
